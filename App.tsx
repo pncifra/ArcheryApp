@@ -1,19 +1,37 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { Button, View, Text } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { ScoreboardScreen } from './src/components/Scoreboard';
+import { ProfileScreen } from './src/components/Profile';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  );
+interface Props {
+	navigation: any
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+class HomeScreen extends React.Component<Props> {
+
+	render() {
+		return (
+			<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+				<Text>Home Screen</Text>
+				<Button
+					title="Scoreboard"
+					onPress={() => this.props.navigation.navigate('Scoreboard')}
+				/>
+				<Button
+					title="Profile"
+					onPress={() => this.props.navigation.navigate('Profile')}
+				/>
+			</View>
+		);
+	}
+}
+
+const RootStack = createStackNavigator({
+	Home: HomeScreen,
+	Scoreboard: ScoreboardScreen,
+    Profile: ProfileScreen
 });
+
+export default createAppContainer(RootStack);
