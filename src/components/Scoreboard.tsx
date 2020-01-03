@@ -1,153 +1,166 @@
 import React from "react";
-import { Button, StyleSheet, Text, TouchableHighlight, View, Modal } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
-interface Props {
-	navigation: any
-}
 
 /**
  * Component to handle scoreboard view
  */
-export class ScoreboardScreen extends React.Component<Props> {
+export class ScoreboardScreen extends React.Component {
+	constructor(props) {
+		super(props);
+
+		/** binds state change to update input field onChange*/
+		this.handleChange = this.handleChange.bind(this);
+	}
+
+	handleChange(event) {
+		this.setState({ scores: event.target.value });
+	}
+
+	/** initializes state */
 	state = {
-		modalVisible: true,
 		scores: []
 	};
 
-	setModalVisible(visible) {
-		this.setState({ modalVisible: visible });
-	}
 
 	render() {
+		let scores = this.state.scores;
 		return (
-			<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-				<Text>Scoreboard Screen</Text>
-				<Modal
-					animationType="slide"
-					transparent={true}
-					visible={this.state.modalVisible}>
-					<TouchableHighlight
-						onPress={() => {
-							this.setModalVisible(!this.state.modalVisible);
-						}}>
-						<View style={styles.modalBackground}></View>
-					</TouchableHighlight>
-					<View style={[styles.modal, {
-						flexDirection: "row",
-						flexWrap: "wrap",
-						justifyContent: "space-between"
-					}]}>
-						<TouchableHighlight
-							style={styles.button}
-							onPress={() => { this.state.scores.push('X') }}>
-							<Text style={{ alignSelf: "center", fontSize: wp("6%") }}>X</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={styles.button}
-							onPress={() => { this.state.scores.push('10') }}>
-							<Text style={{ alignSelf: "center", fontSize: wp("6%") }}>10</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={styles.button}
-							onPress={() => { this.state.scores.push('9') }}>
-							<Text style={{ alignSelf: "center", fontSize: wp("6%") }}>9</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "#CC2752" }]}
-							onPress={() => { this.state.scores.push('8') }}>
-							<Text style={styles.keytext}>8</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "#34559d" }]}
-							onPress={() => { this.state.scores.pop(), console.log(this.state.scores) }}>
-							<Text style={styles.keytext}>Del</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "#CC2752" }]}
-							onPress={() => { this.state.scores.push('7') }}>
-							<Text style={styles.keytext}>7</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "#30CCFF" }]}
-							onPress={() => { this.state.scores.push('6') }}>
-							<Text style={styles.keytext}>6</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "#30CCFF" }]}
-							onPress={() => { this.state.scores.push('5') }}>
-							<Text style={styles.keytext}>5</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "black" }]}
-							onPress={() => { this.state.scores.push('4') }}>
-							<Text style={styles.keytext}>4</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={styles.button}
-							onPress={() => { console.log(this.state.scores) }}>
-							<Text style={{ alignSelf: "center", fontSize: wp("6%") }}>Enter</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "black" }]}
-							onPress={() => { this.state.scores.push('3') }}>
-							<Text style={styles.keytext}>3</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "white" }]}
-							onPress={() => { this.state.scores.push('2') }}>
-							<Text style={{ alignSelf: "center", fontSize: wp("6%") }}>2</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "white" }]}
-							onPress={() => { this.state.scores.push('1') }}>
-							<Text style={{ alignSelf: "center", fontSize: wp("6%") }}>1</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={[styles.button, { backgroundColor: "#2BD10E" }]}
-							onPress={() => { this.state.scores.push('M') }}>
-							<Text style={styles.keytext}>M</Text>
-						</TouchableHighlight>
-						<TouchableHighlight
-							style={styles.button}
-							onPress={() => this.props.navigation.push('Home')}>
-							<Text style={{ alignSelf: "center", fontSize: wp("6%") }}>Home</Text>
-						</TouchableHighlight>
-					</View>
-				</Modal>
-				<TouchableHighlight
-					onPress={() => {
-						this.setModalVisible(true);
-					}}>
-					<Text>Show Modal</Text>
-				</TouchableHighlight>
+			<View style={{ flex: 1 }}>
+				<TextInput
+					style={styles.input}
+					editable={false}
+					maxLength={27}
+					onChange={this.handleChange}
+					value={"Round 1:  " + scores.toString().split(",").join("  ")}
+				/>
+				<TextInput
+					style={styles.input}
+					editable={false}
+					maxLength={27}
+					value={"Round 2:  " + scores.slice(6).toString().split(",").join("  ")}
+				/>
+				<TextInput
+					style={styles.input}
+					editable={false}
+					maxLength={27}
+					value={"Round 3:  " + scores.slice(12).toString().split(",").join("  ")}
+				/>
 
-			</View >
+				{/* Create a keyboard element */}
+				<View
+					style={styles.keyboard}>
+					<TouchableHighlight
+						style={styles.key}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "X"] }) }}>
+						<Text style={[styles.keytext, { color: "black" }]}>X</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={styles.key}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "10"] }) }}>
+						<Text style={[styles.keytext, { color: "black" }]}>10</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={styles.key}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "9"] }) }}>
+						<Text style={[styles.keytext, { color: "black" }]}>9</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "#CC2752" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "8"] }) }}>
+						<Text style={styles.keytext}>8</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "#34559d" }]}
+						onPress={() => { this.state.scores.pop(), console.log(this.state.scores) }}>
+						<Text style={styles.keytext}>Del</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "#CC2752" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "7"] }) }}>
+						<Text style={styles.keytext}>7</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "#30CCFF" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "6"] }) }}>
+						<Text style={styles.keytext}>6</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "#30CCFF" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "5"] }) }}>
+						<Text style={styles.keytext}>5</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "black" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "4"] }) }}>
+						<Text style={styles.keytext}>4</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={styles.key}
+						onPress={() => { console.log(this.state) }}>
+						<Text style={[styles.keytext, { color: "black" }]}>Enter</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "black" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "3"] }) }}>
+						<Text style={styles.keytext}>3</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "white" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "2"] }) }}>
+						<Text style={[styles.keytext, { color: "black" }]}>2</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "white" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "1"] }) }}>
+						<Text style={[styles.keytext, { color: "black" }]}>1</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={[styles.key, { backgroundColor: "#2BD10E" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores, "M"] }) }}>
+						<Text style={styles.keytext}>M</Text>
+					</TouchableHighlight>
+					<TouchableHighlight style={styles.key}>
+						<Text style={[styles.keytext, { color: "black" }]}>Home</Text>
+					</TouchableHighlight>
+				</View>
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	button: {
+	input: {
+		width: wp("100%"),
+		height: hp("8%"),
+		fontSize: hp("3%"),
+		borderColor: 'grey',
+		borderBottomWidth: 1,
+		alignContent: "space-between",
+		paddingLeft: wp("2%"),
+	},
+	key: {
 		width: wp("19.2%"),
 		height: hp("9%"),
 		backgroundColor: "#FFF017",
 		justifyContent: "center",
-		borderBottomWidth: 2
+		borderBottomWidth: 2,
+		borderRadius: 3,
 	},
 	keytext: {
 		alignSelf: "center",
-		fontSize: wp("6%"),
+		fontSize: hp("3.5%"),
 		color: "white"
 	},
-	modal: {
+	keyboard: {
+		position: "absolute",
+		bottom: 1,
+		flexDirection: "row",
+		flexWrap: "wrap",
+		justifyContent: "space-between",
 		width: wp("100%"),
-		height: hp("27%"),
+		height: hp("27.5%"),
 		backgroundColor: "#34558b",
 		borderWidth: 2,
 	},
-	modalBackground: {
-		width: wp("100%"),
-		height: hp("73%"),
-	}
 });
