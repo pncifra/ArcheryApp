@@ -70,7 +70,7 @@ export class ScoreboardScreen extends React.Component {
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "#34559d" }]}
-						onPress={() => { this.state.scores.pop(), console.log(this.state.scores) }}>
+						onPress={() => { this.setState({ scores: [...this.state.scores.slice(0, -1)] }) }}>
 						<Text style={styles.keytext}>Del</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
@@ -134,16 +134,14 @@ const styles = StyleSheet.create({
 		fontSize: hp("3%"),
 		borderColor: 'grey',
 		borderBottomWidth: 1,
-		alignContent: "space-between",
 		paddingLeft: wp("2%"),
 	},
 	key: {
-		width: wp("19.2%"),
-		height: hp("9%"),
+		width: wp("19.1%"),
+		height: hp("8.5%"),
 		backgroundColor: "#FFF017",
 		justifyContent: "center",
 		borderBottomWidth: 2,
-		borderRadius: 3,
 	},
 	keytext: {
 		alignSelf: "center",
@@ -155,9 +153,9 @@ const styles = StyleSheet.create({
 		bottom: 1,
 		flexDirection: "row",
 		flexWrap: "wrap",
-		justifyContent: "space-between",
+		justifyContent: "space-evenly",
 		width: wp("100%"),
-		height: hp("27.5%"),
+		height: hp("25.8%"),
 		backgroundColor: "#34558b",
 		borderWidth: 2,
 	},
