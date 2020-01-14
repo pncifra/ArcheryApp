@@ -17,7 +17,9 @@ export class ScoreboardScreen extends React.Component {
 	state = {
 		scores: [],
 		rounds: 3,
-		shots: 6
+		shots: 6,
+		total: 0,
+		average: 0
 	};
 
 	handleChange = (event) => {
@@ -48,6 +50,10 @@ export class ScoreboardScreen extends React.Component {
 				{/* Create a keyboard element */}
 				<View
 					style={styles.keyboard}>
+					<View style={styles.summary}>
+						<Text style={{ fontSize: hp("3%"), color: "#fff" }}>Total: {this.state.total}</Text>
+						<Text style={{ fontSize: hp("3%"), color: "#fff" }}>Average: {this.state.average}</Text>
+					</View>
 					<TouchableHighlight
 						style={styles.key}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "X"] }) }}>
@@ -122,7 +128,7 @@ export class ScoreboardScreen extends React.Component {
 						<Text style={[styles.keytext, { color: "black" }]}>Home</Text>
 					</TouchableHighlight>
 				</View>
-			</View>
+			</View >
 		);
 	}
 }
@@ -137,11 +143,11 @@ const styles = StyleSheet.create({
 		paddingLeft: wp("2%"),
 	},
 	key: {
-		width: wp("19.1%"),
-		height: hp("8.5%"),
+		width: wp("18.7%"),
+		height: hp("8.2%"),
+		margin: wp(".5%"),
 		backgroundColor: "#FFF017",
 		justifyContent: "center",
-		borderBottomWidth: 2,
 	},
 	keytext: {
 		alignSelf: "center",
@@ -153,10 +159,19 @@ const styles = StyleSheet.create({
 		bottom: 1,
 		flexDirection: "row",
 		flexWrap: "wrap",
-		justifyContent: "space-evenly",
+		justifyContent: "space-between",
 		width: wp("100%"),
-		height: hp("25.8%"),
-		backgroundColor: "#34558b",
-		borderWidth: 2,
+		height: hp("33%"),
+		backgroundColor: "#98ddff",
 	},
+	summary: {
+		backgroundColor: "#5cd5ff",
+		width: wp("100%"),
+		height: hp("6%"),
+		marginBottom: wp(".75%"),
+		justifyContent: "space-between",
+		alignItems: "center",
+		flexDirection: "row",
+		padding: wp("2%"),
+	}
 });
