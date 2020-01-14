@@ -13,39 +13,37 @@ export class ScoreboardScreen extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	handleChange(event) {
+	/** initializes state */
+	state = {
+		scores: [],
+		rounds: 3,
+		shots: 6
+	};
+
+	handleChange = (event) => {
 		this.setState({ scores: event.target.value });
 	}
 
-	/** initializes state */
-	state = {
-		scores: []
-	};
-
+	createRounds = () => {
+		let rounds = [];
+		for (let i = 1; i <= this.state.rounds; i++) {
+			rounds.push(
+				<TextInput
+					style={styles.input}
+					key={i}
+					editable={false}
+					maxLength={10 + this.state.shots * 3}
+					onChange={this.handleChange}
+					value={"Round " + i + ":  " + this.state.scores.slice(this.state.shots * (i - 1)).toString().split(",").join("  ")}
+				/>)
+		}
+		return rounds;
+	}
 
 	render() {
-		let scores = this.state.scores;
 		return (
 			<View style={{ flex: 1 }}>
-				<TextInput
-					style={styles.input}
-					editable={false}
-					maxLength={27}
-					onChange={this.handleChange}
-					value={"Round 1:  " + scores.toString().split(",").join("  ")}
-				/>
-				<TextInput
-					style={styles.input}
-					editable={false}
-					maxLength={27}
-					value={"Round 2:  " + scores.slice(6).toString().split(",").join("  ")}
-				/>
-				<TextInput
-					style={styles.input}
-					editable={false}
-					maxLength={27}
-					value={"Round 3:  " + scores.slice(12).toString().split(",").join("  ")}
-				/>
+				{this.createRounds()}
 
 				{/* Create a keyboard element */}
 				<View
