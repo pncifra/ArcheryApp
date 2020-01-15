@@ -51,8 +51,10 @@ export class ScoreboardScreen extends React.Component {
 				<View
 					style={styles.keyboard}>
 					<View style={styles.summary}>
-						<Text style={{ fontSize: hp("3%"), color: "#fff" }}>Total: {this.state.total}</Text>
-						<Text style={{ fontSize: hp("3%"), color: "#fff" }}>Average: {this.state.average}</Text>
+						<Text style={{ fontSize: hp("2.5%"), color: "#fff" }} >
+							Total: {this.state.total} / {this.state.shots * this.state.rounds * 10}
+						</Text>
+						<Text style={{ fontSize: hp("2.5%"), color: "#fff" }}>Average: {this.state.average}</Text>
 					</View>
 					<TouchableHighlight
 						style={styles.key}
@@ -70,27 +72,27 @@ export class ScoreboardScreen extends React.Component {
 						<Text style={[styles.keytext, { color: "black" }]}>9</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#CC2752" }]}
+						style={[styles.key, { backgroundColor: "#CC0E60" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "8"] }) }}>
 						<Text style={styles.keytext}>8</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#34559d" }]}
+						style={[styles.key, { backgroundColor: "#B3366B" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores.slice(0, -1)] }) }}>
 						<Text style={styles.keytext}>Del</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#CC2752" }]}
+						style={[styles.key, { backgroundColor: "#CC0E60" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "7"] }) }}>
 						<Text style={styles.keytext}>7</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#30CCFF" }]}
+						style={[styles.key, { backgroundColor: "#57E4FF" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "6"] }) }}>
 						<Text style={styles.keytext}>6</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#30CCFF" }]}
+						style={[styles.key, { backgroundColor: "#57E4FF" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "5"] }) }}>
 						<Text style={styles.keytext}>5</Text>
 					</TouchableHighlight>
@@ -146,12 +148,12 @@ const styles = StyleSheet.create({
 		width: wp("18.7%"),
 		height: hp("8.2%"),
 		margin: wp(".5%"),
-		backgroundColor: "#FFF017",
+		backgroundColor: "#FFEC3E",
 		justifyContent: "center",
 	},
 	keytext: {
 		alignSelf: "center",
-		fontSize: hp("3.5%"),
+		fontSize: hp("3%"),
 		color: "white"
 	},
 	keyboard: {
@@ -162,10 +164,10 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		width: wp("100%"),
 		height: hp("33%"),
-		backgroundColor: "#98ddff",
+		backgroundColor: "#B3A210",
 	},
 	summary: {
-		backgroundColor: "#5cd5ff",
+		backgroundColor: "#998B0E",
 		width: wp("100%"),
 		height: hp("6%"),
 		marginBottom: wp(".75%"),
