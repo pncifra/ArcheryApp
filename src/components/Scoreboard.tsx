@@ -22,10 +22,12 @@ export class ScoreboardScreen extends React.Component {
 		average: 0
 	};
 
+	/** pushes a new score to the scores array in state */
 	handleChange = (event) => {
 		this.setState({ scores: event.target.value });
 	}
 
+	/** renders TextInput elements equal to the number of rounds */
 	createRounds = () => {
 		let rounds = [];
 		for (let i = 1; i <= this.state.rounds; i++) {
