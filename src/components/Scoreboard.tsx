@@ -13,43 +13,51 @@ export class ScoreboardScreen extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	handleChange(event) {
+	/** initializes state */
+	state = {
+		scores: [],
+		rounds: 3,
+		shots: 6,
+		total: 0,
+		average: 0
+	};
+
+	/** pushes a new score to the scores array in state */
+	handleChange = (event) => {
 		this.setState({ scores: event.target.value });
 	}
 
-	/** initializes state */
-	state = {
-		scores: []
-	};
-
+	/** renders TextInput elements equal to the number of rounds */
+	createRounds = () => {
+		let rounds = [];
+		for (let i = 1; i <= this.state.rounds; i++) {
+			rounds.push(
+				<TextInput
+					style={styles.input}
+					key={i}
+					editable={false}
+					maxLength={10 + this.state.shots * 3}
+					onChange={this.handleChange}
+					value={"Round " + i + ":  " + this.state.scores.slice(this.state.shots * (i - 1)).toString().split(",").join("  ")}
+				/>)
+		}
+		return rounds;
+	}
 
 	render() {
-		let scores = this.state.scores;
 		return (
 			<View style={{ flex: 1 }}>
-				<TextInput
-					style={styles.input}
-					editable={false}
-					maxLength={27}
-					onChange={this.handleChange}
-					value={"Round 1:  " + scores.toString().split(",").join("  ")}
-				/>
-				<TextInput
-					style={styles.input}
-					editable={false}
-					maxLength={27}
-					value={"Round 2:  " + scores.slice(6).toString().split(",").join("  ")}
-				/>
-				<TextInput
-					style={styles.input}
-					editable={false}
-					maxLength={27}
-					value={"Round 3:  " + scores.slice(12).toString().split(",").join("  ")}
-				/>
+				{this.createRounds()}
 
 				{/* Create a keyboard element */}
 				<View
 					style={styles.keyboard}>
+					<View style={styles.summary}>
+						<Text style={{ fontSize: hp("2.5%"), color: "#fff" }} >
+							Total: {this.state.total} / {this.state.shots * this.state.rounds * 10}
+						</Text>
+						<Text style={{ fontSize: hp("2.5%"), color: "#fff" }}>Average: {this.state.average}</Text>
+					</View>
 					<TouchableHighlight
 						style={styles.key}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "X"] }) }}>
@@ -66,27 +74,27 @@ export class ScoreboardScreen extends React.Component {
 						<Text style={[styles.keytext, { color: "black" }]}>9</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#CC2752" }]}
+						style={[styles.key, { backgroundColor: "#CC0E60" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "8"] }) }}>
 						<Text style={styles.keytext}>8</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#34559d" }]}
-						onPress={() => { this.state.scores.pop(), console.log(this.state.scores) }}>
+						style={[styles.key, { backgroundColor: "#B3366B" }]}
+						onPress={() => { this.setState({ scores: [...this.state.scores.slice(0, -1)] }) }}>
 						<Text style={styles.keytext}>Del</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#CC2752" }]}
+						style={[styles.key, { backgroundColor: "#CC0E60" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "7"] }) }}>
 						<Text style={styles.keytext}>7</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#30CCFF" }]}
+						style={[styles.key, { backgroundColor: "#57E4FF" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "6"] }) }}>
 						<Text style={styles.keytext}>6</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
-						style={[styles.key, { backgroundColor: "#30CCFF" }]}
+						style={[styles.key, { backgroundColor: "#57E4FF" }]}
 						onPress={() => { this.setState({ scores: [...this.state.scores, "5"] }) }}>
 						<Text style={styles.keytext}>5</Text>
 					</TouchableHighlight>
@@ -124,7 +132,7 @@ export class ScoreboardScreen extends React.Component {
 						<Text style={[styles.keytext, { color: "black" }]}>Home</Text>
 					</TouchableHighlight>
 				</View>
-			</View>
+			</View >
 		);
 	}
 }
@@ -136,20 +144,18 @@ const styles = StyleSheet.create({
 		fontSize: hp("3%"),
 		borderColor: 'grey',
 		borderBottomWidth: 1,
-		alignContent: "space-between",
 		paddingLeft: wp("2%"),
 	},
 	key: {
-		width: wp("19.2%"),
-		height: hp("9%"),
-		backgroundColor: "#FFF017",
+		width: wp("18.7%"),
+		height: hp("8.2%"),
+		margin: wp(".5%"),
+		backgroundColor: "#FFEC3E",
 		justifyContent: "center",
-		borderBottomWidth: 2,
-		borderRadius: 3,
 	},
 	keytext: {
 		alignSelf: "center",
-		fontSize: hp("3.5%"),
+		fontSize: hp("3%"),
 		color: "white"
 	},
 	keyboard: {
@@ -159,8 +165,17 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap",
 		justifyContent: "space-between",
 		width: wp("100%"),
-		height: hp("27.5%"),
-		backgroundColor: "#34558b",
-		borderWidth: 2,
+		height: hp("33%"),
+		backgroundColor: "#B3A210",
 	},
+	summary: {
+		backgroundColor: "#998B0E",
+		width: wp("100%"),
+		height: hp("6%"),
+		marginBottom: wp(".75%"),
+		justifyContent: "space-between",
+		alignItems: "center",
+		flexDirection: "row",
+		padding: wp("2%"),
+	}
 });
