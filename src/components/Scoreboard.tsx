@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, Image, TouchableHighlight, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 /**
@@ -14,8 +14,8 @@ export class ScoreboardScreen extends React.Component {
 	state = {
 		scores: [],
 		images: [],
-		rounds: 3,
-		shots: 8,
+		rounds: 2,
+		shots: 15,
 		total: 0,
 		average: 0
 	};
@@ -23,7 +23,7 @@ export class ScoreboardScreen extends React.Component {
 	/** updates score total and average in state */
 	updateResults = () => {
 		let total = this.state.scores.reduce((acc, score) => acc + score, 0),
-			average = Math.round((total / this.state.scores.length) * 10) / 10;
+			average = Math.round((total / this.state.scores.length) * 10) / 10 || 0;
 		this.setState({ total, average });
 	}
 
@@ -31,9 +31,7 @@ export class ScoreboardScreen extends React.Component {
 	createRounds = () => {
 		let roundEl = [],
 			imageEl = [],
-			shots = this.state.shots,
-			rounds = this.state.rounds,
-			images = this.state.images;
+			{ shots, rounds, images } = this.state;
 
 		for (let j = 1; j <= shots * rounds; j++) {
 			imageEl.push(
@@ -56,6 +54,8 @@ export class ScoreboardScreen extends React.Component {
 	}
 
 	render() {
+		let { shots, rounds, scores, images } = this.state;
+
 		return (
 			<View style={{ flex: 1 }}>
 				{this.createRounds()}
@@ -65,53 +65,140 @@ export class ScoreboardScreen extends React.Component {
 					style={styles.keyboard}>
 					<View style={styles.summary}>
 						<Text style={{ fontSize: hp("2.5%"), color: "#fff" }} >
-							Total: {this.state.total} / {this.state.shots * this.state.rounds * 10}
+							Total: {this.state.total} / {shots * rounds * 10}
 						</Text>
 						<Text style={{ fontSize: hp("2.5%"), color: "#fff" }}>Average: {this.state.average}</Text>
 					</View>
 					<TouchableHighlight
 						style={styles.key}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 10], images: [...this.state.images, require("../../assets/X.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 10],
+									images: [...images, require("../../assets/X.png")]
+								},
+									() => { this.updateResults() }
+								)
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={styles.keytext}>X</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={styles.key}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 10], images: [...this.state.images, require("../../assets/10.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 10],
+									images: [...images, require("../../assets/10.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={styles.keytext}>10</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={styles.key}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 9], images: [...this.state.images, require("../../assets/9.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 9],
+									images: [...images, require("../../assets/9.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={styles.keytext}>9</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "#CC0E60" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 8], images: [...this.state.images, require("../../assets/8.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 8],
+									images: [...images, require("../../assets/8.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={[styles.keytext, { color: "white" }]}>8</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "#B3366B" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores.slice(0, -1)], images: [...this.state.images.slice(0, -1)] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							this.setState({
+								scores: [...scores.slice(0, -1)],
+								images: [...images.slice(0, -1)]
+							},
+								() => { this.updateResults() })
+						}}>
 						<Text style={[styles.keytext, { color: "white" }]}>Del</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "#CC0E60" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 7], images: [...this.state.images, require("../../assets/7.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 7],
+									images: [...images, require("../../assets/7.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={[styles.keytext, { color: "white" }]}>7</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "#57E4FF" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 6], images: [...this.state.images, require("../../assets/6.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 6],
+									images: [...images, require("../../assets/6.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={styles.keytext}>6</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "#57E4FF" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 5], images: [...this.state.images, require("../../assets/5.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 5],
+									images: [...images, require("../../assets/5.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={styles.keytext}>5</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "black" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 4], images: [...this.state.images, require("../../assets/4.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 4],
+									images: [...images, require("../../assets/4.png")]
+								}
+									, () => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={[styles.keytext, { color: "white" }]}>4</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
@@ -121,22 +208,62 @@ export class ScoreboardScreen extends React.Component {
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "black" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 3], images: [...this.state.images, require("../../assets/3.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 3],
+									images: [...images, require("../../assets/3.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={[styles.keytext, { color: "white" }]}>3</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "white" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 2], images: [...this.state.images, require("../../assets/2.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 2],
+									images: [...images, require("../../assets/2.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={styles.keytext}>2</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "white" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 1], images: [...this.state.images, require("../../assets/1.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 1],
+									images: [...images, require("../../assets/1.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={styles.keytext}>1</Text>
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={[styles.key, { backgroundColor: "white" }]}
-						onPress={() => { this.setState({ scores: [...this.state.scores, 0], images: [...this.state.images, require("../../assets/0.png")] }, () => { this.updateResults() }) }}>
+						onPress={() => {
+							if (scores.length < shots * rounds) {
+								this.setState({
+									scores: [...scores, 0],
+									images: [...images, require("../../assets/0.png")]
+								},
+									() => { this.updateResults() })
+							} else {
+								Alert.alert("No shots left!", "You have used up all " + shots * rounds + " of your shots.")
+							}
+						}}>
 						<Text style={styles.keytext}>0</Text>
 					</TouchableHighlight>
 					<TouchableHighlight style={styles.key}>
